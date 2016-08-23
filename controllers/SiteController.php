@@ -60,7 +60,8 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        //as home controller is not needed for now - just setting redirect
+        return $this->redirect(Yii::$app->urlManager->createUrl('call/index'));
     }
 
     /**

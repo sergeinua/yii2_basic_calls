@@ -36,21 +36,22 @@ AppAsset::register($this);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
-            Yii::$app->user->isGuest ? (
-                ['label' => 'Login', 'url' => ['/site/login']]
-            ) : (
-                '<li>'
-                . Html::beginForm(['/site/logout'], 'post', ['class' => 'navbar-form'])
-                . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->username . ')',
-                    ['class' => 'btn btn-link']
-                )
-                . Html::endForm()
-                . '</li>'
-            )
+            ['label' => 'До списку', 'url' => ['/call/index']],
+            ['label' => 'Загальна статистика', 'url' => ['/site/about']],
+//            ['label' => 'Contact', 'url' => ['/site/contact']],
+            /* as the authentification isn't in use - commenting this link */
+//            Yii::$app->user->isGuest ? (
+//                ['label' => 'Login', 'url' => ['/site/login']]
+//            ) : (
+//                '<li>'
+//                . Html::beginForm(['/site/logout'], 'post', ['class' => 'navbar-form'])
+//                . Html::submitButton(
+//                    'Logout (' . Yii::$app->user->identity->username . ')',
+//                    ['class' => 'btn btn-link']
+//                )
+//                . Html::endForm()
+//                . '</li>'
+//            )
         ],
     ]);
     NavBar::end();
