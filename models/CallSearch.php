@@ -12,6 +12,7 @@ use app\models\Call;
  */
 class CallSearch extends Call
 {
+    public $dateRange;
     /**
      * @inheritdoc
      */
@@ -69,6 +70,14 @@ class CallSearch extends Call
         ]);
 
         $query->andFilterWhere(['like', 'comment', $this->comment]);
+
+        if ($params && $params['CallSearch'] && $params['CallSearch']['dateRange']) {
+            $timestampRange = [];
+            $timestampRange[] = strtotime(substr($params['CallSearch']['dateRange'], 0, 19));
+            $timestampRange[] = strtotime(substr($params['CallSearch']['dateRange'], 22, 19));
+
+            $query->andFilterWhere(['between', 'time_init', $timestampRange[0], $timestampRange[1]]);
+        }
 
         return $dataProvider;
     }

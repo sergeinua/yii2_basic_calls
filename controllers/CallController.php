@@ -63,15 +63,18 @@ class CallController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Call();
+        Yii::$app->session->setFlash('danger', 'You\'re not allowed to create new calls');
+        return $this->redirect('/');
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
+//        $model = new Call();
+//
+//        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+//            return $this->redirect(['view', 'id' => $model->id]);
+//        } else {
+//            return $this->render('create', [
+//                'model' => $model,
+//            ]);
+//        }
     }
 
     /**
@@ -85,6 +88,7 @@ class CallController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', 'Your comment was successfully updated');
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
@@ -120,5 +124,10 @@ class CallController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    public function actionStat()
+    {
+
     }
 }

@@ -12,19 +12,23 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'sender_num')->textInput() ?>
+    <?php if ($model->isNewRecord) : ?>
 
-    <?= $form->field($model, 'recepient_num')->textInput() ?>
+        <?= $form->field($model, 'sender_num')->textInput(['readonly' => $model->isNewRecord ? false : true]) ?>
 
-    <?= $form->field($model, 'time_init')->textInput() ?>
+        <?= $form->field($model, 'recepient_num')->textInput(['readonly' => $model->isNewRecord ? false : true]) ?>
 
-    <?= $form->field($model, 'time_connected')->textInput() ?>
+        <?= $form->field($model, 'time_init')->textInput(['readonly' => $model->isNewRecord ? false : true]) ?>
 
-    <?= $form->field($model, 'time_finished')->textInput() ?>
+        <?= $form->field($model, 'time_connected')->textInput(['readonly' => $model->isNewRecord ? false : true]) ?>
 
-    <?= $form->field($model, 'route')->textInput() ?>
+        <?= $form->field($model, 'time_finished')->textInput(['readonly' => $model->isNewRecord ? false : true]) ?>
 
-    <?= $form->field($model, 'comment')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'route')->textInput(['readonly' => $model->isNewRecord ? false : true]) ?>
+
+    <?php endif; ?>
+
+    <?= $form->field($model, 'comment')->textArea(['maxlength' => true]) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

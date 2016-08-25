@@ -37,7 +37,7 @@ AppAsset::register($this);
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
             ['label' => 'До списку', 'url' => ['/call/index']],
-            ['label' => 'Загальна статистика', 'url' => ['/site/about']],
+            ['label' => 'Загальна статистика', 'url' => ['/www']],
 //            ['label' => 'Contact', 'url' => ['/site/contact']],
             /* as the authentification isn't in use - commenting this link */
 //            Yii::$app->user->isGuest ? (

@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\bootstrap\Alert;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Call */
@@ -25,6 +26,11 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
     </p>
 
+    <?php
+    foreach(Yii::$app->session->getAllFlashes() as $key => $message) {
+        echo Alert::widget(['options' => ['class' => "alert-$key"], 'body' => $message]);
+    } ?>
+
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
@@ -34,7 +40,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'time_init:datetime',
             'time_connected:datetime',
             'time_finished:datetime',
-            'route',
+            [
+                'attribute' => 'route',
+                'value' => ($model->route == 1) ? 'incoming' : 'outgoing'
+            ],
             'comment',
         ],
     ]) ?>

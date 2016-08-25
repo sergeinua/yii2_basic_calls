@@ -3,6 +3,9 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use kartik\daterange\DateRangePicker;
+use yii\bootstrap\Alert;
+
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\CallSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -18,7 +21,12 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Create Call', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-<?php Pjax::begin(); ?>    <?= GridView::widget([
+    <?php
+    foreach(Yii::$app->session->getAllFlashes() as $key => $message) {
+        echo Alert::widget(['options' => ['class' => "alert-$key"], 'body' => $message]);
+    } ?>
+    <?php Pjax::begin(); ?>
+    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
@@ -27,13 +35,37 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'sender_num',
             'recepient_num',
-            'time_init:datetime',
+//            'time_init:datetime',
+            [
+                'attribute' => 'time_init',
+                'value' => function($model) {
+                    return date('d-m-Y H:i:s', $model->time_finished);
+                },
+                'filter' => DateRangePicker::widget([
+                    'model' => $searchModel,
+                    'attribute' => 'dateRange',
+                    'convertFormat'=>true,
+                    'pluginOptions'=>[
+                        'timePicker'=>true,
+                        'timePickerIncrement'=>10,
+                        'locale'=>[
+                            'format'=>'Y-m-d h:i A'
+                        ]
+                    ]
+                ]),
+            ],
             'time_connected:datetime',
-            // 'time_finished:datetime',
-            // 'route',
-            // 'comment',
+            'time_finished:datetime',
+            [
+                'attribute' => 'route',
+                'value' => function ($model) {
+                    return ($model->route == 1) ? 'incoming' : 'outgoing';
+                }
+            ],
+            'comment',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
-<?php Pjax::end(); ?></div>
+    <?php Pjax::end(); ?>
+</div>
