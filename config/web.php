@@ -43,7 +43,7 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                'www' => '/site/about'
+                'www' => '/call/stat'
             ],
         ],
     ],

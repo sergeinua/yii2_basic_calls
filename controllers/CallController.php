@@ -128,6 +128,20 @@ class CallController extends Controller
 
     public function actionStat()
     {
+        $quantity = Call::getQuan();
+        $incoming = Call::getIncoming();
+        $outgoing = Call::getOutgoing();
+        $avg_duration = Call::getAvgDuration();
+        $max_duration = Call::getMaxDuration();
+        $max_used_num = Call::getMaxUsedNumber();
 
+        return $this->render('www', [
+            'quantity' => $quantity,
+            'incoming' => $incoming,
+            'outgoing' => $outgoing,
+            'avg_duration' => $avg_duration,
+            'max_duration' => $max_duration,
+            'max_used_num' => $max_used_num
+        ]);
     }
 }

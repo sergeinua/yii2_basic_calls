@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\db\Query;
 
 /**
  * This is the model class for table "call".
@@ -52,5 +53,83 @@ class Call extends \yii\db\ActiveRecord
             'route' => 'Route',
             'comment' => 'Comment',
         ];
+    }
+
+    /**
+     * Total quantity of the calls
+     * @return int|string
+     */
+    public static function getQuan()
+    {
+        return Call::find()->count();
+    }
+
+    /**
+     * Incoming calls
+     * @return int|string
+     */
+    public static function getIncoming()
+    {
+        return Call::find()
+            ->where(['route' => 0])
+            ->count();
+    }
+
+    /**
+     * Outgoing calls
+     * @return int|string
+     */
+    public static function getOutgoing()
+    {
+        return Call::find()
+            ->where(['route' => 1])
+            ->count();
+    }
+
+    /**
+     * Average call duration
+     * @return int|mixed
+     */
+    public static function getAvgDuration()
+    {
+        $started =  Call::find()->sum('time_connected');
+        $finished = Call::find()->sum('time_finished');
+        $result = $finished - $started;
+        $result = intval($result / self::getQuan());
+
+        return $result;
+    }
+
+    /**
+     * Max call duration in seconds
+     * @return mixed
+     */
+    public static function getMaxDuration()
+    {
+        $models = Call::find()->all();
+        foreach ($models as $model) {
+            $result[$model->id] = $model->time_finished - $model->time_connected;
+        }
+
+        return max($result);
+    }
+
+    /**
+     * Most recent tel number
+     * @return array
+     */
+    public static function getMaxUsedNumber()
+    {
+        $query = new Query;
+
+        $query->select('recepient_num, count(recepient_num) as quan')
+            ->from('call')
+            ->groupBy('recepient_num')
+            ->orderBy('quan desc')
+            ->limit(1);
+
+        $rows = $query->all();
+
+        return $rows[0]['recepient_num'];
     }
 }
